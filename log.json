@@ -1,0 +1,18 @@
+{
+  "console": {
+    "enable": true,
+    "pattern": "[%D %T] [%C] [%L] (%S) %M",
+    "level": "FINE"
+  },
+  "files": [{
+    "enable": true,
+    "level": "INFO",
+    "filename":"iot.log",
+    "category": "App",
+    "pattern": "[%D %T] [%L] %M",
+    "rotate": true,
+    "maxsize": "100M",
+    "maxlines": "10K",
+    "daily": true
+  }]
+}

@@ -1,0 +1,18 @@
+
+name = "Iot Link Server"
+
+version = "1.0.0"
+
+[influx]
+host = "http://192.168.1.12:8086"
+database = "sensordata"
+
+[db]
+host = "192.168.1.252"
+database = "iot"
+port = 5432
+user = "postgres"
+password = "postgres"
+
+[web]
+listen = ":80"
