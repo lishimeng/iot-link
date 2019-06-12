@@ -35,11 +35,11 @@ func logicTemplate(ctx iris.Context) {
 func getLogic(ctx iris.Context) {
 	res := NewBean()
 	appId := ctx.Params().Get("appId")
-	logic, err := repo.GetLogic(appId)
+	logicScript, err := repo.GetLogic(appId)
 	if err != nil {
 		res.Code = -1
 	} else {
-		res.Item = &logic
+		res.Item = &logicScript
 	}
 
 	_, _ = ctx.JSON(&res)
