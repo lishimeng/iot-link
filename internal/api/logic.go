@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/kataras/iris"
 	"github.com/lishimeng/iot-link/internal/db/repo"
+	"github.com/lishimeng/iot-link/internal/integration/logic"
 )
 
 func SetupLogic(app *iris.Application) {
@@ -14,9 +15,21 @@ func routLogic(app *iris.Application) {
 	p := app.Party("api/{owner}/application/{appId}/logic")
 	{
 		p.Get("", getLogic)
+		p.Get("/tpl", logicTemplate)
 		p.Post("/", updateLogic)
 		p.Post("/del", delLogic)
 	}
+}
+
+func logicTemplate(ctx iris.Context) {
+	res := NewBean()
+
+	item := repo.LogicScript{
+		Content: logic.Tpl,
+	}
+	res.Item = &item
+
+	_, _ = ctx.JSON(&res)
 }
 
 func getLogic(ctx iris.Context) {

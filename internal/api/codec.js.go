@@ -2,6 +2,7 @@ package api
 
 import (
 	"github.com/kataras/iris"
+	"github.com/lishimeng/iot-link/internal/codec/raw"
 	"github.com/lishimeng/iot-link/internal/db/repo"
 )
 
@@ -14,9 +15,20 @@ func routeCodecJs(app *iris.Application) {
 	p := app.Party("api/{owner}/application/{appId}/codec/js/")
 	{
 		p.Get("/", getCodecJs)
+		p.Get("/tpl", codecTemplate)
 		p.Post("/", createOrUpdateCodecJs)
 		p.Post("/del", delCodecJs)
 	}
+}
+
+func codecTemplate(ctx iris.Context) {
+	res := NewBean()
+	item := repo.CodecScript{
+		EncodeContent: raw.EncodeTpl,
+		DecodeContent: raw.DecodeTpl,
+	}
+	res.Item = &item
+	_, _ = ctx.JSON(&res)
 }
 
 func getCodecJs(ctx iris.Context) {
