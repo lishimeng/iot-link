@@ -10,7 +10,7 @@ import (
 	"github.com/robertkrimen/otto"
 )
 
-const LogicTpl = `
+const Tpl = `
 // object -> byte array
 function execute(message){
 	if (message.data) {

@@ -6,7 +6,11 @@ import (
 )
 
 const (
+	// lorawan
 	LoraWanType = "lora"
+
+	// mqtt传输,json数据
+	MqttJson = "mqtt_json"
 )
 
 type Config struct {
