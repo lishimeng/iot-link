@@ -15,6 +15,29 @@ func GetConnectorConfig(id string) (c *ConnectorConfig, err error) {
 }
 
 // TODO pagination
+
+func ListConnector(pageNum int, limit int) (conns []ConnectorConfig, page Page, err error) {
+
+	q := ConnectorConfig{}
+	res := new([]ConnectorConfig)
+	var size int64
+	size, err = db.Orm.Context.QueryTable(&q).Count()
+
+	if err != nil {
+		return conns, page, err
+	}
+	count := int(size)
+	page = NewPage(count, pageNum, limit)
+	if count > 0 {
+		limit, start := GetLimit(pageNum, limit)
+		_, err = db.Orm.Context.QueryTable(&q).Limit(limit, start).OrderBy("CreateTime").All(res)
+		if err == nil {
+			conns = *res
+		}
+	}
+	return conns, page, err
+}
+
 func GetConnectConfigs() (cs[]*ConnectorConfig, size int64) {
 
 	q := ConnectorConfig{}
@@ -35,6 +58,11 @@ func CreateConnectorConfig(name string, Type string, propsMap map[string]string)
 		return c, err
 	}
 	props = string(bs)
+	return CreateConnectorConf(name, Type, props)
+}
+
+func CreateConnectorConf(name string, Type string, props string) (c ConnectorConfig, err error) {
+
 	c = ConnectorConfig{
 		Id: fmt.Sprintf("CONN%d", time.Now().Unix()),
 		Name: name,

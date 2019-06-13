@@ -55,16 +55,24 @@ func getApps(ctx iris.Context) {
 	_, _ = ctx.JSON(&res)
 }
 
+type AppForm struct {
+	AppId string
+	Name string
+	CodecType string
+	ConnectorId string
+}
+
 // 创建app
 func createApp(ctx iris.Context) {
-
-	appId := ctx.Params().Get("appId")
-	name := ctx.Params().Get("name")
-	codeType := ctx.Params().Get("codeType")
-	connectorId := ctx.Params().Get("connectorId")
-	app, err := repo.CreateApp(appId, name, codeType, connectorId)
-
 	res := NewBean()
+	var form AppForm
+	var app *repo.AppConfig
+	var err error
+	err = ctx.ReadForm(&form)
+	if err == nil {
+		app, err = repo.CreateApp(form.AppId, form.Name, form.CodecType, form.ConnectorId)
+	}
+
 	if err == nil {
 		res.Item = &app
 	} else {
