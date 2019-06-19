@@ -4,9 +4,7 @@ import (
 	log "github.com/jeanphorn/log4go"
 	"github.com/lishimeng/iot-link/internal/etc"
 	"github.com/lishimeng/iot-link/internal/setup"
-	"os"
-	"os/signal"
-	"syscall"
+	"github.com/lishimeng/shutdown"
 )
 
 func main() {
@@ -30,26 +28,11 @@ func main() {
 		return
 	}
 
-	waitExit()
-}
-
-func waitExit() {
-
-	sigChan := make(chan os.Signal)
-	exitChan := make(chan struct{})
-	signal.Notify(sigChan, os.Interrupt, syscall.SIGTERM)
-	go func() {
-		// todo: handle graceful shutdown?
-		//exitChan <- struct{}{}
-		log.Info("stopping server[auto]")
-	}()
-	log.Info("wait for exit")
-	select {
-	case <-exitChan:
-		log.Info("exit received, stopping immediately")
-	case s := <-sigChan:
-		log.Info("signal received, stopping immediately %s", s)
-	}
+	shutdown.WaitExit(&shutdown.Configuration{
+		BeforeExit: func(s string) {
+			log.Info("Shutdown [ %s ] (%s)", etc.Config.Name, s)
+		},
+	})
 }
 
 func setupComponents() (err error) {
