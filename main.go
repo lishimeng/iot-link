@@ -42,6 +42,7 @@ func setupComponents() (err error) {
 		setup.Message,
 		setup.Connector,
 		setup.Web,
+		setup.Influx,
 	}
 
 	for _, component := range components {

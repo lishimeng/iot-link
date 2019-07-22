@@ -74,10 +74,10 @@ func loadConnector(connConf repo.ConnectorConfig) {
 func createConn(conf connector.Config) (c connector.Connector, err error) {
 	switch conf.Type {
 	case connector.LoraWanType:
-		c = lorawan.Create(conf)
+		c, err = lorawan.Create(conf)
 		break
 	case connector.MqttJson:
-		c =mq.Create(conf)
+		c,err = mq.Create(conf)
 		break
 	default:
 		err = fmt.Errorf("unknown connector type %s", conf.Type)

@@ -4,9 +4,9 @@ import (
 	"encoding/base64"
 	"fmt"
 	log "github.com/jeanphorn/log4go"
+	"github.com/lishimeng/go-connector/mqtt"
 	"github.com/lishimeng/iot-link/internal/connector"
 	"github.com/lishimeng/iot-link/internal/model"
-	"github.com/lishimeng/iot-link/internal/plugin/mqtt"
 )
 
 type connectorLoraWan struct {
@@ -22,7 +22,7 @@ type connectorLoraWan struct {
 	StateDescription string
 }
 
-func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLink string, topicDownLink string) connector.Connector {
+func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLink string, topicDownLink string) (connector.Connector, error) {
 
 	log.Debug("create mqtt connector[%d]", mqttBroker)
 	c := connectorLoraWan{
@@ -38,7 +38,7 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	var onConnect = func(s mqtt.Session) {
 		log.Debug("lora mqtt subscribe upLink topic:%s", c.UpLinkTopicTpl)
 		c.State = c.Session.State
-		c.Session.Subscribe(c.UpLinkTopicTpl)
+		c.Session.Subscribe(c.UpLinkTopicTpl, 0, nil)
 		c.State = c.Session.State
 	}
 	var onConnLost = func(s mqtt.Session) {
@@ -56,12 +56,12 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	c.Session.Connect()
 
 	var conn connector.Connector = &c
-	return conn
+	return conn, nil// TODO
 }
 
-func Create(conf connector.Config) (c connector.Connector) {
+func Create(conf connector.Config) (c connector.Connector, err error) {
 
-	c = New(
+	c, err = New(
 		conf.ID,
 		conf.Name,
 		conf.Props["broker"],
@@ -69,7 +69,7 @@ func Create(conf connector.Config) (c connector.Connector) {
 		conf.Props["upLink"],
 		conf.Props["downLink"],
 		)
-	return c
+	return c, err
 }
 
 func (c connectorLoraWan) GetID() string {
@@ -116,6 +116,11 @@ func(c *connectorLoraWan) messageCallback(mqSession mqtt.Session, topic string, 
 	}
 
 	c.Listener(&context)
+
+	go func() {
+		// TODO if class_a, handle down link
+
+	} ()
 }
 
 func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {
@@ -126,5 +131,11 @@ func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {
 	data := convertJsonDownLinkData(payload) // 序列化得到json类型data字符串
 
 	topic := fmt.Sprintf(c.DownLinkTopicTpl, target.AppId, target.DeviceId)
-	c.Session.Publish(topic, data)
+
+	go func() {
+		err := c.Session.Publish(topic, 0, data)
+		if err != nil {
+			log.Debug(err)
+		}
+	}()
 }

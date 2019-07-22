@@ -11,6 +11,7 @@ const (
 
 	// mqtt传输,json数据
 	MqttJson = "mqtt_json"
+	Amqp = "amq"
 )
 
 type Config struct {

@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	log "github.com/jeanphorn/log4go"
+	"github.com/lishimeng/go-connector/mqtt"
 	"github.com/lishimeng/iot-link/internal/connector"
 	"github.com/lishimeng/iot-link/internal/model"
-	"github.com/lishimeng/iot-link/internal/plugin/mqtt"
 	"github.com/lishimeng/iot-link/internal/plugin/topics"
 )
 
@@ -23,7 +23,7 @@ type connectorMqttJson struct {
 	StateDescription string
 }
 
-func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLink string, topicDownLink string) connector.Connector {
+func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLink string, topicDownLink string) (connector.Connector, error) {
 
 	log.Debug("create mqtt connector[%d]", mqttBroker)
 	c := connectorMqttJson{
@@ -37,10 +37,12 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	}
 
 	var onConnect = func(s mqtt.Session) {
-		log.Debug("lora mqtt subscribe upLink topics:%s", c.UpLinkTopicTpl)
+		log.Debug("lora mqtt connected")
 		c.State = c.Session.State
-		c.Session.Subscribe(c.UpLinkTopicTpl)
-		c.State = c.Session.State
+		if len(c.UpLinkTopicTpl) > 0 {
+			log.Debug("lora mqtt subscribe upLink topics:%s", c.UpLinkTopicTpl)
+			c.Session.Subscribe(c.UpLinkTopicTpl, 0, nil)
+		}
 	}
 	var onConnLost = func(s mqtt.Session) {
 		log.Debug("lora mqtt lost connection")
@@ -57,12 +59,12 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	c.Session.Connect()
 
 	var conn connector.Connector = &c
-	return conn
+	return conn, nil// TODO
 }
 
-func Create(conf connector.Config) (c connector.Connector) {
+func Create(conf connector.Config) (c connector.Connector, err error) {
 
-	c = New(
+	c, err = New(
 		conf.ID,
 		conf.Name,
 		conf.Props["broker"],
@@ -70,7 +72,7 @@ func Create(conf connector.Config) (c connector.Connector) {
 		conf.Props["upLink"],
 		conf.Props["downLink"],
 	)
-	return c
+	return c, err
 }
 
 func (c connectorMqttJson) GetID() string {
@@ -118,8 +120,16 @@ func (c connectorMqttJson) DownLink(target model.Target, logicData []byte) {
 
 	data := string(logicData)
 
-	topic := fmt.Sprintf(c.DownLinkTopicTpl, target.AppId, target.DeviceId)
-	c.Session.Publish(topic, data)
+	if len(c.DownLinkTopicTpl) > 0 {
+		topic := fmt.Sprintf(c.DownLinkTopicTpl, target.AppId, target.DeviceId)
+		go func() {
+			err := c.Session.Publish(topic, 0, data)
+			if err != nil {
+				log.Debug(err)
+			}
+		}()
+
+	}
 }
 
 func onDataUpLink(raw []byte) (payload map[string]interface{}, err error) {

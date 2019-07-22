@@ -58,7 +58,8 @@ func (handler msgLogicHandler) OnData(msg model.LinkMessage) model.LinkMessage {
 		if ok {
 			msg.Data = value
 		} else {
-			msg.Data = make(map[string]interface{})
+			// logic执行异常不清除data内容
+			//msg.Data = make(map[string]interface{})
 		}
 	}
 	return msg

@@ -7,6 +7,8 @@ type PayloadRx struct {
 	DevEUI string `json:"devEUI"`
 	Data string `json:"data"`
 	DataObj *map[string]interface{} `json:"object,omitempty"`
+
+	FPort int `json:"fPort"`
 }
 
 type PayloadTx struct {
