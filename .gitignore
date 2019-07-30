@@ -15,4 +15,7 @@
 
 .idea/
 
+# vgo cache
+vendor
+
 iot-link
