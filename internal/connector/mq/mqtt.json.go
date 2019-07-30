@@ -44,8 +44,9 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 			c.Session.Subscribe(c.UpLinkTopicTpl, 0, nil)
 		}
 	}
-	var onConnLost = func(s mqtt.Session) {
+	var onConnLost = func(s mqtt.Session, reason error) {
 		log.Debug("lora mqtt lost connection")
+		log.Debug(reason)
 		c.Session.State = false
 		c.State = c.Session.State
 	}

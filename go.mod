@@ -32,7 +32,7 @@ require (
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/lishimeng/go-connector v0.0.0-20190730091325-932d9917f299
-	github.com/lishimeng/shutdown v0.0.0-20190619070718-c45a90ef55ea
+	github.com/lishimeng/go-libs v0.0.0-20190730102053-348b8bb24c1a
 	github.com/mattn/go-colorable v0.1.2 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
@@ -50,6 +50,4 @@ require (
 	github.com/yudai/gojsondiff v1.0.0 // indirect
 	github.com/yudai/golcs v0.0.0-20170316035057-ecda9a501e82 // indirect
 	github.com/yudai/pp v2.0.1+incompatible // indirect
-	google.golang.org/appengine v1.6.1 // indirect
-	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )

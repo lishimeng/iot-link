@@ -2,9 +2,9 @@ package main
 
 import (
 	log "github.com/jeanphorn/log4go"
+	"github.com/lishimeng/go-libs/shutdown"
 	"github.com/lishimeng/iot-link/internal/etc"
 	"github.com/lishimeng/iot-link/internal/setup"
-	"github.com/lishimeng/shutdown"
 )
 
 func main() {

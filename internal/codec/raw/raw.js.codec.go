@@ -2,23 +2,10 @@ package raw
 
 import (
 	"fmt"
+	"github.com/lishimeng/go-libs/script"
 	"github.com/lishimeng/iot-link/internal/codec"
 	"github.com/lishimeng/iot-link/internal/db/repo"
-	"github.com/lishimeng/iot-link/internal/script"
 )
-
-const EncodeTpl = `
-// object -> byte array
-function encode(map) {
-    return;
-}
-`
-const DecodeTpl = `
-// byte array -> object
-function decode(data) {
-    return {};
-}
-`
 
 type jsRawCodec struct {
 

@@ -5,13 +5,13 @@ import (
 	"fmt"
 	"github.com/astaxie/beego/orm"
 	_ "github.com/lib/pq"
+	"github.com/lishimeng/go-libs/persistence"
 	"github.com/lishimeng/iot-link/internal/codec"
 	"github.com/lishimeng/iot-link/internal/connector"
 	"github.com/lishimeng/iot-link/internal/db"
 	"github.com/lishimeng/iot-link/internal/db/repo"
 	"github.com/lishimeng/iot-link/internal/etc"
 	"github.com/lishimeng/iot-link/internal/model"
-	"github.com/lishimeng/persistence"
 )
 
 func DBRepo() (err error) {

@@ -3,10 +3,10 @@ package logic
 import (
 	"fmt"
 	log "github.com/jeanphorn/log4go"
+	"github.com/lishimeng/go-libs/script"
 	"github.com/lishimeng/iot-link/internal/db/repo"
 	"github.com/lishimeng/iot-link/internal/event"
 	"github.com/lishimeng/iot-link/internal/model"
-	"github.com/lishimeng/iot-link/internal/script"
 	"github.com/robertkrimen/otto"
 )
 

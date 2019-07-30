@@ -3,10 +3,10 @@ package intoyun
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/lishimeng/go-libs/codec/tlv"
 	"github.com/lishimeng/iot-link/internal/codec"
 	"github.com/lishimeng/iot-link/internal/db/repo"
 	"github.com/lishimeng/iot-link/internal/model"
-	"github.com/lishimeng/iot-link/internal/plugin/tlv"
 	"github.com/lishimeng/iot-link/internal/tools"
 )
 

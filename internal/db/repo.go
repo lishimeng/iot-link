@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/lishimeng/persistence"
+	"github.com/lishimeng/go-libs/persistence"
 )
 var Orm persistence.OrmContext
 
