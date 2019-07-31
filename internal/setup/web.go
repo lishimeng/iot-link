@@ -8,7 +8,7 @@ import (
 
 func Web() error {
 
-	var components = []func(application *iris.Application)  {
+	var components = []func(application *iris.Application){
 		api.SetupDataPoint,
 		api.SetupApplication,
 		api.SetupLogic,

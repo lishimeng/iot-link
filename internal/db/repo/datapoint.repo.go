@@ -15,7 +15,7 @@ func GetDataPoint(appId string) (dp DataPoint, err error) {
 func CreateDataPoint(appId string, content string) (dp DataPoint, err error) {
 
 	dp = DataPoint{
-		AppId: appId,
+		AppId:      appId,
 		DataPoints: content,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
@@ -28,7 +28,7 @@ func CreateDataPoint(appId string, content string) (dp DataPoint, err error) {
 func UpdateDataPoint(appId string, content string) (dp DataPoint, err error) {
 
 	dp = DataPoint{
-		AppId:appId,
+		AppId:      appId,
 		DataPoints: content,
 		UpdateTime: time.Now().Unix(),
 	}

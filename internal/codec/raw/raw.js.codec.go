@@ -8,7 +8,6 @@ import (
 )
 
 type jsRawCodec struct {
-
 }
 
 func New() codec.Coder {

@@ -38,4 +38,3 @@ func (d dataProcessEngineImpl) OnDataUplink(uplink *model.LinkMessage) {
 func (d dataProcessEngineImpl) OnDataDownLink(target model.Target, props map[string]interface{}) {
 	processDownLink(target, props, d.cb)
 }
-

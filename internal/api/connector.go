@@ -55,8 +55,8 @@ func getConnector(ctx iris.Context) () {
 }
 
 type ConnectorForm struct {
-	Name string
-	Type string
+	Name  string
+	Type  string
 	Props string
 }
 

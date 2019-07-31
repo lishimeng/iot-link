@@ -38,7 +38,7 @@ func ListConnector(pageNum int, limit int) (conns []ConnectorConfig, page Page, 
 	return conns, page, err
 }
 
-func GetConnectConfigs() (cs[]*ConnectorConfig, size int64) {
+func GetConnectConfigs() (cs []*ConnectorConfig, size int64) {
 
 	q := ConnectorConfig{}
 	size, err := db.Orm.Context.QueryTable(&q).OrderBy("CreateTime").All(&cs)
@@ -64,10 +64,10 @@ func CreateConnectorConfig(name string, Type string, propsMap map[string]string)
 func CreateConnectorConf(name string, Type string, props string) (c ConnectorConfig, err error) {
 
 	c = ConnectorConfig{
-		Id: fmt.Sprintf("CONN%d", time.Now().Unix()),
-		Name: name,
-		Type: Type,
-		Props: props,
+		Id:         fmt.Sprintf("CONN%d", time.Now().Unix()),
+		Name:       name,
+		Type:       Type,
+		Props:      props,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}

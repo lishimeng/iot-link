@@ -8,16 +8,14 @@ import (
 const (
 	// lorawan
 	LoraWanType = "lora"
-
-	// mqtt传输,json数据
-	MqttJson = "mqtt_json"
-	Amqp = "amq"
+	MqttJson    = "mqtt_json"
+	Amqp        = "amq"
 )
 
 type Config struct {
-	ID string `json:"id"`
-	Name string `json:"name"`
-	Type string `json:"type"`
+	ID    string            `json:"id"`
+	Name  string            `json:"name"`
+	Type  string            `json:"type"`
 	Props map[string]string `json:"props"`
 }
 
@@ -39,13 +37,13 @@ type Repository interface {
 
 type connRepo struct {
 	connectors map[string]Connector
-	name2id map[string]string
+	name2id    map[string]string
 }
 
 func New() Repository {
 	r := connRepo{
 		connectors: make(map[string]Connector),
-		name2id: make(map[string]string),
+		name2id:    make(map[string]string),
 	}
 	var repo Repository = &r
 

@@ -36,7 +36,7 @@ func main() {
 }
 
 func setupComponents() (err error) {
-	components := []func() error {
+	components := []func() error{
 		setup.DBRepo,
 		setup.Event,
 		setup.Message,
@@ -53,4 +53,3 @@ func setupComponents() (err error) {
 
 	return nil
 }
-

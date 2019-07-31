@@ -7,7 +7,7 @@ import (
 	"github.com/lishimeng/iot-link/internal/static"
 )
 
-func Run(components... func(app *iris.Application)) {
+func Run(components ...func(app *iris.Application)) {
 	app := iris.New()
 	app.Logger().SetLevel("debug")
 	app.Use(logger.New())
@@ -33,7 +33,6 @@ func Run(components... func(app *iris.Application)) {
 			component(app)
 		}
 	}
-
 
 	_ = app.Run(iris.Addr(etc.Config.Web.Listen))
 

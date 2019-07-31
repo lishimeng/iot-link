@@ -28,19 +28,19 @@ type LinkMessage struct {
 // 数据点结构
 type DataPoint struct {
 	// 数据点序号
-	Index int32   `json:"index"`
+	Index int32 `json:"index"`
 	// 名称
-	Name string   `json:"name"`
+	Name string `json:"name"`
 	// 数据类型
 	/// bool   0
 	/// number 1
 	/// enum   2
 	/// txt    3
-	Type int32    `json:"type"`
+	Type int32 `json:"type"`
 	// 数据长度
-	Length int32  `json:"length,omitempty"`
+	Length int32 `json:"length,omitempty"`
 	// 出现在上报中
-	UpLink bool   `json:"upLinkEnable,omitempty"`
+	UpLink bool `json:"upLinkEnable,omitempty"`
 	// 出现在下发中
 	DownLink bool `json:"downLinkEnable,omitempty"`
 }

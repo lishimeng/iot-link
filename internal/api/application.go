@@ -56,9 +56,9 @@ func getApps(ctx iris.Context) {
 }
 
 type AppForm struct {
-	AppId string
-	Name string
-	CodecType string
+	AppId       string
+	Name        string
+	CodecType   string
 	ConnectorId string
 }
 

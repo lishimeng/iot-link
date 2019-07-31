@@ -36,12 +36,12 @@ func ListApp(pageNum int, limit int) (apps []AppConfig, page Page, err error) {
 func CreateApp(appId string, name string, codecType string, connectorId string) (app *AppConfig, err error) {
 
 	app = &AppConfig{
-		AppId: appId,
+		AppId:          appId,
 		AppDescription: name,
-		CodecType: codecType,
-		Connector: connectorId,
-		CreateTime: time.Now().Unix(),
-		UpdateTime: time.Now().Unix(),
+		CodecType:      codecType,
+		Connector:      connectorId,
+		CreateTime:     time.Now().Unix(),
+		UpdateTime:     time.Now().Unix(),
 	}
 	_, err = db.Orm.Context.Insert(app)
 	err = checkErr(err)

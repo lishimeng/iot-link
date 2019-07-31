@@ -10,17 +10,17 @@ func TestLinkMessageData(t *testing.T) {
 
 	var d = LinkMessage{
 		Data: map[string]interface{}{
-			"gps": map[string]string {
+			"gps": map[string]string{
 				"latitude": "1234.33221234",
-				"lat": "N",
+				"lat":      "N",
 				"logitude": "313455.1133311",
-				"log": "E",
+				"log":      "E",
 			},
-			"rfid": map[string]string {
+			"rfid": map[string]string{
 				"tid": "1111111111111",
 				"epc": "2222222222222",
 			},
-			"bat": map[string]string {
+			"bat": map[string]string{
 				"level": "10",
 			},
 		},

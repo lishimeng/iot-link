@@ -27,13 +27,13 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 
 	log.Debug("create mqtt connector[%d]", mqttBroker)
 	c := connectorMqttJson{
-		Id: id,
-		Name: name,
-		Host: mqttBroker,
-		ClientId: mqttClientId,
+		Id:               id,
+		Name:             name,
+		Host:             mqttBroker,
+		ClientId:         mqttClientId,
 		DownLinkTopicTpl: topicDownLink,
-		UpLinkTopicTpl: topicUpLink,
-		State: false,
+		UpLinkTopicTpl:   topicUpLink,
+		State:            false,
 	}
 
 	var onConnect = func(s mqtt.Session) {
@@ -60,7 +60,7 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	c.Session.Connect()
 
 	var conn connector.Connector = &c
-	return conn, nil// TODO
+	return conn, nil // TODO
 }
 
 func Create(conf connector.Config) (c connector.Connector, err error) {
@@ -94,7 +94,7 @@ func (c *connectorMqttJson) SetListener(listener connector.UpLinkListener) {
 
 // 监听数据上传
 ///
-func(c *connectorMqttJson) messageCallback(mqSession mqtt.Session, topic string, mqttMsg []byte) {
+func (c *connectorMqttJson) messageCallback(mqSession mqtt.Session, topic string, mqttMsg []byte) {
 
 	log.Debug("receive mqtt upLink data %s", topic)
 	context := model.LinkMessage{}

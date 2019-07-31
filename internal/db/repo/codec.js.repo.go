@@ -8,11 +8,11 @@ import (
 func CreateJs(appId string, encodeScript string, decodeScript string) (codec CodecScript, err error) {
 
 	c := CodecScript{
-		AppId: appId,
+		AppId:         appId,
 		EncodeContent: encodeScript,
 		DecodeContent: decodeScript,
-		CreateTime: time.Now().Unix(),
-		UpdateTime: time.Now().Unix(),
+		CreateTime:    time.Now().Unix(),
+		UpdateTime:    time.Now().Unix(),
 	}
 	_, err = db.Orm.Context.Insert(&c)
 	return c, err
@@ -34,7 +34,6 @@ func CreateOrUpdateJs(appId string, encodeScript string, decodeScript string) (c
 
 	return codec, err
 }
-
 
 func GetJs(appId string) (js CodecScript, err error) {
 

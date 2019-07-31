@@ -22,8 +22,8 @@ func New(id string, name string, broker string, clientId string, topicUpLink str
 	log.Debug("create mqtt connector[%d]", broker)
 
 	c := connectorLoraWan{
-		Id: id,
-		Name: name,
+		Id:    id,
+		Name:  name,
 		State: false,
 	}
 
@@ -36,7 +36,7 @@ func New(id string, name string, broker string, clientId string, topicUpLink str
 	proxy.Connect()
 
 	var conn connector.Connector = &c
-	return conn, nil// TODO
+	return conn, nil // TODO
 }
 
 func Create(conf connector.Config) (c connector.Connector, err error) {
@@ -48,7 +48,7 @@ func Create(conf connector.Config) (c connector.Connector, err error) {
 		conf.Props["clientId"],
 		conf.Props["upLink"],
 		conf.Props["downLink"],
-		)
+	)
 	return c, err
 }
 
@@ -92,7 +92,7 @@ func (c *connectorLoraWan) onMessage(payload lorawan.PayloadRx) {
 	go func() {
 		// TODO if class_a, handle down link
 
-	} ()
+	}()
 }
 
 func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {

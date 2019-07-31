@@ -1,19 +1,18 @@
 package etc
 
-
 type Configuration struct {
-	Name string
+	Name    string
 	Version string
-	Db db
-	Web web
-	Influx influx
+	Db      db
+	Web     web
+	Influx  influx
 }
 
 type db struct {
-	Host string
+	Host     string
 	Database string
-	Port int
-	User string
+	Port     int
+	User     string
 	Password string
 }
 
@@ -22,6 +21,6 @@ type web struct {
 }
 
 type influx struct {
-	Host string
+	Host     string
 	Database string
 }

@@ -14,8 +14,8 @@ func DeviceUpLinkParamTpl(tpl string, topic string) (res map[string]string, err 
 	} else {
 		res = make(map[string]string)
 		for i, v := range ss {
-			if strings.HasPrefix(v,"{") && strings.HasSuffix(v, "}") {
-				name := v[1:len(v) - 1]
+			if strings.HasPrefix(v, "{") && strings.HasSuffix(v, "}") {
+				name := v[1 : len(v)-1]
 				value := st[i]
 				res[name] = value
 			}

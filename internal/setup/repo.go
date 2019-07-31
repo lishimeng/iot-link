@@ -18,12 +18,12 @@ func DBRepo() (err error) {
 	var config = persistence.PostgresConfig{
 		UserName: etc.Config.Db.User,
 		Password: etc.Config.Db.Password,
-		Host: etc.Config.Db.Host,
-		Port: etc.Config.Db.Port,
-		DbName: etc.Config.Db.Database,
-		MaxIdle: 5,
-		MaxConn: 10,
-		InitDb: true,
+		Host:     etc.Config.Db.Host,
+		Port:     etc.Config.Db.Port,
+		DbName:   etc.Config.Db.Database,
+		MaxIdle:  5,
+		MaxConn:  10,
+		InitDb:   true,
 	}
 
 	err = orm.RegisterDriver("postgres", orm.DRPostgres)
@@ -46,10 +46,10 @@ func initTestData() {
 	// test code
 	name := "LoraWan192.168.1.12"
 	t := connector.LoraWanType
-	props := map[string]string {
-		"broker": "tcp://192.168.1.12:1883",
+	props := map[string]string{
+		"broker":   "tcp://192.168.1.12:1883",
 		"clientId": "iot_link_sample",
-		"upLink": "application/+/device/+/rx",
+		"upLink":   "application/+/device/+/rx",
 		"downLink": "application/%s/device/%s/tx",
 	}
 	c, _ := repo.CreateConnectorConfig(name, t, props)
@@ -87,11 +87,11 @@ function execute(message){
 
 	dps := make(map[string]model.DataPoint)
 	dp1 := model.DataPoint{
-		Index: 1,
-		Name: "switch",
-		Type: 1,
-		Length: 1,
-		UpLink: true,
+		Index:    1,
+		Name:     "switch",
+		Type:     1,
+		Length:   1,
+		UpLink:   true,
 		DownLink: true,
 	}
 	dps[fmt.Sprintf("%d", dp1.Index)] = dp1

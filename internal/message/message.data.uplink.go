@@ -21,7 +21,7 @@ func processUpLink(message *model.LinkMessage) {
 	}
 
 	if appConfig.CodecType != codec.None {
-		if message.Data == nil {// 需要decode
+		if message.Data == nil { // 需要decode
 			switch appConfig.CodecType {
 			case codec.Javascript:
 				// find from raw js repo
@@ -59,15 +59,15 @@ func processUpLink(message *model.LinkMessage) {
 func saveMessage(message *model.LinkMessage) {
 	// persistent data
 	tags := map[string]string{
-		"applicationID": message.ApplicationID,
+		"applicationID":   message.ApplicationID,
 		"applicationName": message.ApplicationName,
-		"deviceName": message.DeviceName,
-		"deviceID": message.DeviceID,
+		"deviceName":      message.DeviceName,
+		"deviceID":        message.DeviceID,
 	}
 	if len(message.Data) > 0 {
 		log.Debug(message.Data)
 		var fields = make(map[string]interface{})
-		for k, v:=range message.Data {
+		for k, v := range message.Data {
 			fields[k] = v
 		}
 		persistent.Save(tags, fields)

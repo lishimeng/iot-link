@@ -2,7 +2,6 @@ package shadow
 
 // 设备影子
 type Shadow struct {
-
 	// profile
 	Profiles map[string]Profile
 
@@ -16,7 +15,6 @@ type Shadow struct {
 }
 
 type Profile struct {
-
 	// 名称(ASCII码)
 	Name string
 	// 展示名(UTF-8可中文)
@@ -36,6 +34,5 @@ type Profile struct {
 }
 
 type DataPointTypeEnum struct {
-
 	string string
 }

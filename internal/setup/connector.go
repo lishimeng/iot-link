@@ -54,10 +54,10 @@ func loadConnector(connConf repo.ConnectorConfig) {
 			return
 		}
 
-		forConnector:= connector.Config{
-			ID: connConf.Id,
-			Name: connConf.Name,
-			Type: connConf.Type,
+		forConnector := connector.Config{
+			ID:    connConf.Id,
+			Name:  connConf.Name,
+			Type:  connConf.Type,
 			Props: props,
 		}
 		var c connector.Connector
@@ -77,7 +77,7 @@ func createConn(conf connector.Config) (c connector.Connector, err error) {
 		c, err = lorawan.Create(conf)
 		break
 	case connector.MqttJson:
-		c,err = mq.Create(conf)
+		c, err = mq.Create(conf)
 		break
 	default:
 		err = fmt.Errorf("unknown connector type %s", conf.Type)

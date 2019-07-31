@@ -26,4 +26,3 @@ func GetLimit(pageNo int, pageSize int) (limit int, start int) {
 	start = (pageNo - 1) * pageSize
 	return limit, start
 }
-

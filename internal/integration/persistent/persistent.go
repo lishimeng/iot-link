@@ -8,7 +8,7 @@ import (
 
 var influxClient *influx.Connector
 
-func Init() (err error){
+func Init() (err error) {
 	influxClient, err = influx.New(etc.Config.Influx.Host)
 	return err
 }

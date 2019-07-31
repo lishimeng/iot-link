@@ -11,7 +11,6 @@ import (
 )
 
 type intoyunTlvCodec struct {
-
 }
 
 func New() codec.Coder {
@@ -34,7 +33,7 @@ func (c intoyunTlvCodec) Decode(appId string, raw []byte) (props map[string]inte
 	if err != nil {
 		return props, err
 	}
-	payload := raw[1:]// 拆开包头
+	payload := raw[1:] // 拆开包头
 	frame := tlv.DecodeToFrame(payload)
 	props = make(map[string]interface{})
 	for _, tag := range frame.Tags {
@@ -70,10 +69,10 @@ func (c intoyunTlvCodec) Encode(appId string, props map[string]interface{}) (raw
 		for _, tlvConfig := range structure {
 			if tlvConfig.Name == key {
 				tag := tlv.Tag{
-					TagId: tlvConfig.Index,
-					TagType: tlvConfig.Type,
+					TagId:     tlvConfig.Index,
+					TagType:   tlvConfig.Type,
 					TagLength: tlvConfig.Length,
-					TagData: tagData,
+					TagData:   tagData,
 				}
 				tags[seq] = tag
 				seq++
@@ -84,7 +83,7 @@ func (c intoyunTlvCodec) Encode(appId string, props map[string]interface{}) (raw
 	if seq > 0 {
 		frame.Tags = tags[0:seq]
 		result := tlv.Encode(&frame)
-		result = "1" + result// 补齐包头
+		result = "1" + result // 补齐包头
 		raw = []byte(result)
 	} else {
 		err = fmt.Errorf("data points are empty")

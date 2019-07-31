@@ -1,9 +1,9 @@
 package codec
 
-const(
-	None = "none"
+const (
+	None       = "none"
 	Javascript = "raw"
-	Protobuf = "protobuf"
+	Protobuf   = "protobuf"
 	IntoyunTLV = "intoyuntlv"
 )
 

@@ -95,7 +95,7 @@ func callback(call otto.FunctionCall) otto.Value {
 	deviceID, okDeviceID := target["deviceID"]
 	if okAppID && okDeviceID {
 		go _cb(model.Target{
-			AppId: appID.(string),
+			AppId:    appID.(string),
 			DeviceId: deviceID.(string),
 		}, data)
 	}
