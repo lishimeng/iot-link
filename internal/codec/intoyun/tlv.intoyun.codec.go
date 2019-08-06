@@ -10,18 +10,18 @@ import (
 	"github.com/lishimeng/iot-link/internal/tools"
 )
 
-type intoyunTlvCodec struct {
+type tlvCodec struct {
 }
 
 func New() codec.Coder {
 
-	c := intoyunTlvCodec{}
+	c := tlvCodec{}
 	var plugin codec.Coder = &c
 	return plugin
 }
 
 ///
-func (c intoyunTlvCodec) Decode(appId string, raw []byte) (props map[string]interface{}, err error) {
+func (c tlvCodec) Decode(appId string, raw []byte) (props map[string]interface{}, err error) {
 	var dp repo.DataPoint
 	dp, err = repo.GetDataPoint(appId)
 	if err != nil {
@@ -46,7 +46,7 @@ func (c intoyunTlvCodec) Decode(appId string, raw []byte) (props map[string]inte
 	return props, err
 }
 
-func (c intoyunTlvCodec) Encode(appId string, props map[string]interface{}) (raw []byte, err error) {
+func (c tlvCodec) Encode(appId string, props map[string]interface{}) (raw []byte, err error) {
 
 	var dp repo.DataPoint
 	dp, err = repo.GetDataPoint(appId)

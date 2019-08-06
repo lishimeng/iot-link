@@ -4,8 +4,7 @@ import (
 	"fmt"
 	log "github.com/jeanphorn/log4go"
 	"github.com/lishimeng/go-libs/script"
-	"github.com/lishimeng/iot-link/internal/db/repo"
-	"github.com/lishimeng/iot-link/internal/event"
+	"github.com/lishimeng/iot-link/internal/downlink"
 	"github.com/lishimeng/iot-link/internal/model"
 	"github.com/robertkrimen/otto"
 )
@@ -97,21 +96,21 @@ func callback(call otto.FunctionCall) otto.Value {
 		go _cb(model.Target{
 			AppId:    appID.(string),
 			DeviceId: deviceID.(string),
-		}, data)
+		}, data, false, false)// 设定即时消息
 	}
 	return result
 }
 
-func _cb(target model.Target, data map[string]interface{}) {
+func _cb(target model.Target, data map[string]interface{}, delayed bool, auto bool) {
 
 	log.Debug("send lora downLink [%s:%s:%s] data:%s", target.ConnectorId, target.AppId, target.DeviceId, data)
-	appConfig, err := repo.GetApp(target.AppId)
-	if err == nil {
-		target.ConnectorId = appConfig.Connector
-		event.GetInstance().Send(target, data)
-	} else {
-		log.Debug("skip downLink, no app config")
+	payload := model.EventPayload{
+		Receiver: target,
+		Data: data,
+		Delayed: delayed,
+		AutoDownLink: auto,
 	}
+	_ = downlink.GetInstance().SaveMessage(payload)
 }
 
 func exportValue(value otto.Value) (target map[string]interface{}, ok bool) {

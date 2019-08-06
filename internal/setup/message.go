@@ -12,6 +12,7 @@ func Message() (err error) {
 }
 
 func onDownLink(target model.Target, data []byte) {
+	// TODO check app_device_connector
 	conn, err := ConnectorRepository.GetByID(target.ConnectorId)
 	if err != nil {
 		log.Debug("no connector, skip this data application:%s connector:%s", target.AppId, target.ConnectorId)

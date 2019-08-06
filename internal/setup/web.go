@@ -14,6 +14,7 @@ func Web() error {
 		api.SetupLogic,
 		api.SetupConnector,
 		api.SetupCodecJs,
+		api.SetupTrigger,
 	}
 	go web.Run(components...)
 	return nil

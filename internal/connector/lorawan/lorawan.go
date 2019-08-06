@@ -11,7 +11,7 @@ import (
 type connectorLoraWan struct {
 	Id               string
 	Name             string
-	Connector        lorawan.Connector
+	Proxy            lorawan.Connector
 	Listener         connector.UpLinkListener
 	State            bool
 	StateDescription string
@@ -19,7 +19,7 @@ type connectorLoraWan struct {
 
 func New(id string, name string, broker string, clientId string, topicUpLink string, topicDownLink string) (connector.Connector, error) {
 
-	log.Debug("create mqtt connector[%d]", broker)
+	log.Debug("Lorawan connector[%s]", broker)
 
 	c := connectorLoraWan{
 		Id:    id,
@@ -31,9 +31,12 @@ func New(id string, name string, broker string, clientId string, topicUpLink str
 	if err != nil {
 		return nil, err
 	}
-	c.Connector = proxy
+	c.Proxy = proxy
 	proxy.SetUpLinkListener(c.onMessage)
-	proxy.Connect()
+	err = proxy.ConnectOnce()
+	if err != nil {
+		log.Debug(err)
+	}
 
 	var conn connector.Connector = &c
 	return conn, nil // TODO
@@ -57,7 +60,7 @@ func (c connectorLoraWan) GetID() string {
 }
 
 func (c connectorLoraWan) GetState() bool {
-	return c.Connector.GetSession().State
+	return c.Proxy.GetSession().State
 }
 
 func (c connectorLoraWan) GetName() string {
@@ -88,11 +91,6 @@ func (c *connectorLoraWan) onMessage(payload lorawan.PayloadRx) {
 	}
 
 	c.Listener(&context)
-
-	go func() {
-		// TODO if class_a, handle down link
-
-	}()
 }
 
 func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {
@@ -102,7 +100,7 @@ func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {
 	downLinkData := lorawan.PayloadTx{FPort: 2, Data: raw}
 
 	go func() {
-		err := c.Connector.DownLink(target.AppId, target.DeviceId, downLinkData)
+		err := c.Proxy.DownLink(target.AppId, target.DeviceId, downLinkData)
 		if err != nil {
 			log.Debug(err)
 		}

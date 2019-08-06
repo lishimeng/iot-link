@@ -33,6 +33,10 @@ func DBRepo() (err error) {
 	orm.RegisterModel(new(repo.LogicScript))
 	orm.RegisterModel(new(repo.ConnectorConfig))
 	orm.RegisterModel(new(repo.CodecScript))
+	orm.RegisterModel(new(repo.DownLinkData))
+	orm.RegisterModel(new(repo.DelayedDownLinkData))
+	orm.RegisterModel(new(repo.DownLinkLog))
+	orm.RegisterModel(new(repo.TriggerConfig))
 	err = db.Init(config)
 	if err == nil {
 		//initTestData()
@@ -44,13 +48,13 @@ func DBRepo() (err error) {
 func initTestData() {
 
 	// test code
-	name := "LoraWan192.168.1.12"
-	t := connector.LoraWanType
+	name := "smoke"
+	t := connector.MqttJson
 	props := map[string]string{
-		"broker":   "tcp://192.168.1.12:1883",
-		"clientId": "iot_link_sample",
-		"upLink":   "application/+/device/+/rx",
-		"downLink": "application/%s/device/%s/tx",
+		"broker":   "tcp://192.168.10.101:1883",
+		"clientId": "iot_link_smoke",
+		"upLink":   "application/+/device/+/up",
+		"downLink": "application/%s/device/%s/down",
 	}
 	c, _ := repo.CreateConnectorConfig(name, t, props)
 

@@ -40,9 +40,10 @@ func setupComponents() (err error) {
 		setup.DBRepo,
 		setup.Event,
 		setup.Message,
-		setup.Connector,
 		setup.Web,
 		setup.Influx,
+		setup.Connector,
+		setup.DownLink,
 	}
 
 	for _, component := range components {

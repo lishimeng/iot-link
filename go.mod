@@ -31,8 +31,8 @@ require (
 	github.com/klauspost/compress v1.7.4 // indirect
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/lib/pq v1.2.0
-	github.com/lishimeng/go-connector v0.0.0-20190730091325-932d9917f299
-	github.com/lishimeng/go-libs v0.0.0-20190730102053-348b8bb24c1a
+	github.com/lishimeng/go-connector v0.0.1
+	github.com/lishimeng/go-libs v0.0.1
 	github.com/mattn/go-colorable v0.1.2 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect

@@ -25,6 +25,7 @@ type Connector interface {
 	GetID() string
 	GetName() string
 	GetState() bool
+	// 即时发送
 	DownLink(target model.Target, data []byte)
 	SetListener(OnDataUplink UpLinkListener)
 }

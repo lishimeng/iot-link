@@ -56,7 +56,7 @@ func UpdateApp(appId string, name string, codecType string, connectorId string) 
 	app.Connector = connectorId
 	app.CodecType = codecType
 	app.AppDescription = name
-	_, err = db.Orm.Context.Update(&app, "AppDescription", "CodecType", "Connector", "UpdateTime")
+	_, err = db.Orm.Context.Update(&app, "AppDescription", "CodecType", "Proxy", "UpdateTime")
 	return app, err
 }
 

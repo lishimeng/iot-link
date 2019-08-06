@@ -16,3 +16,8 @@ password = "postgres"
 
 [web]
 listen = ":80"
+
+[down-link]
+fetch-size = 10
+# idle if no downLink data (Millisecond)
+idle-time = 5000

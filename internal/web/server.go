@@ -9,7 +9,7 @@ import (
 
 func Run(components ...func(app *iris.Application)) {
 	app := iris.New()
-	app.Logger().SetLevel("debug")
+	app.Logger().SetLevel("info")
 	app.Use(logger.New())
 	app.Favicon("./favicon.ico", "/favicon.ico")
 

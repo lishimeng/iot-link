@@ -25,6 +25,8 @@ func CreateLogic(appId string, content string) (script LogicScript, err error) {
 		script = LogicScript{AppId: appId, Content: content, CreateTime: time.Now().Unix(), UpdateTime: time.Now().Unix()}
 		_, err = db.Orm.Context.Insert(&script)
 	}
+
+	err = checkErr(err)
 	return script, err
 }
 

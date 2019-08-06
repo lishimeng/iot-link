@@ -10,42 +10,44 @@ import (
 	"github.com/lishimeng/iot-link/internal/plugin/topics"
 )
 
-type connectorMqttJson struct {
+type mqttJsonConnector struct {
 	Id               string
 	Name             string
 	Host             string
 	ClientId         string
-	DownLinkTopicTpl string
+	DownLinkTopic    string
 	UpLinkTopicTpl   string
+	UpLinkTopic      string
 	Session          *mqtt.Session
 	Listener         connector.UpLinkListener
 	State            bool
 	StateDescription string
 }
 
-func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLink string, topicDownLink string) (connector.Connector, error) {
+func New(id string, name string, mqttBroker string, mqttClientId string, topicUpLinkTpl string, topicUpLink string, topicDownLink string) (connector.Connector, error) {
 
-	log.Debug("create mqtt connector[%d]", mqttBroker)
-	c := connectorMqttJson{
+	log.Debug("create mqtt connector[%s]", mqttBroker)
+	c := mqttJsonConnector{
 		Id:               id,
 		Name:             name,
 		Host:             mqttBroker,
 		ClientId:         mqttClientId,
-		DownLinkTopicTpl: topicDownLink,
-		UpLinkTopicTpl:   topicUpLink,
+		DownLinkTopic:    topicDownLink,
+		UpLinkTopic:      topicUpLink,
+		UpLinkTopicTpl:   topicUpLinkTpl,
 		State:            false,
 	}
 
 	var onConnect = func(s mqtt.Session) {
-		log.Debug("lora mqtt connected")
+		log.Debug("mqtt connected")
 		c.State = c.Session.State
-		if len(c.UpLinkTopicTpl) > 0 {
-			log.Debug("lora mqtt subscribe upLink topics:%s", c.UpLinkTopicTpl)
-			c.Session.Subscribe(c.UpLinkTopicTpl, 0, nil)
+		if len(c.UpLinkTopic) > 0 {
+			log.Debug("mqtt subscribe upLink topics:%s", c.UpLinkTopic)
+			c.Session.Subscribe(c.UpLinkTopic, 0, nil)
 		}
 	}
 	var onConnLost = func(s mqtt.Session, reason error) {
-		log.Debug("lora mqtt lost connection")
+		log.Debug("mqtt lost connection")
 		log.Debug(reason)
 		c.Session.State = false
 		c.State = c.Session.State
@@ -56,7 +58,7 @@ func New(id string, name string, mqttBroker string, mqttClientId string, topicUp
 	c.Session.OnLostConnect = onConnLost
 	c.Session.OnMessage = c.messageCallback
 
-	log.Debug("lora mqtt connect to broker %s", c.Host)
+	log.Debug("mqtt connect to broker %s", c.Host)
 	c.Session.Connect()
 
 	var conn connector.Connector = &c
@@ -70,31 +72,32 @@ func Create(conf connector.Config) (c connector.Connector, err error) {
 		conf.Name,
 		conf.Props["broker"],
 		conf.Props["clientId"],
+		conf.Props["upLinkTpl"],
 		conf.Props["upLink"],
 		conf.Props["downLink"],
 	)
 	return c, err
 }
 
-func (c connectorMqttJson) GetID() string {
+func (c mqttJsonConnector) GetID() string {
 	return c.Id
 }
 
-func (c connectorMqttJson) GetState() bool {
+func (c mqttJsonConnector) GetState() bool {
 	return c.State
 }
 
-func (c connectorMqttJson) GetName() string {
+func (c mqttJsonConnector) GetName() string {
 	return c.Name
 }
 
-func (c *connectorMqttJson) SetListener(listener connector.UpLinkListener) {
+func (c *mqttJsonConnector) SetListener(listener connector.UpLinkListener) {
 	c.Listener = listener
 }
 
 // 监听数据上传
 ///
-func (c *connectorMqttJson) messageCallback(mqSession mqtt.Session, topic string, mqttMsg []byte) {
+func (c *mqttJsonConnector) messageCallback(mqSession mqtt.Session, topic string, mqttMsg []byte) {
 
 	log.Debug("receive mqtt upLink data %s", topic)
 	context := model.LinkMessage{}
@@ -117,19 +120,19 @@ func (c *connectorMqttJson) messageCallback(mqSession mqtt.Session, topic string
 	c.Listener(&context)
 }
 
-func (c connectorMqttJson) DownLink(target model.Target, logicData []byte) {
+func (c mqttJsonConnector) DownLink(target model.Target, logicData []byte) {
 
 	data := string(logicData)
 
-	if len(c.DownLinkTopicTpl) > 0 {
-		topic := fmt.Sprintf(c.DownLinkTopicTpl, target.AppId, target.DeviceId)
+	if len(c.DownLinkTopic) > 0 {
+		topic := fmt.Sprintf(c.DownLinkTopic, target.AppId, target.DeviceId)
+		log.Debug("down link: %s[%s]", data, topic)
 		go func() {
 			err := c.Session.Publish(topic, 0, data)
 			if err != nil {
 				log.Debug(err)
 			}
 		}()
-
 	}
 }
 

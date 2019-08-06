@@ -1,5 +1,14 @@
 package repo
 
+const (
+	Push = iota
+	Pull
+)
+const (
+	Disabled = iota
+	Enabled
+)
+
 // 暂时不需要
 type DeviceConfig struct {
 	DeviceId string `orm:"pk"`
@@ -17,7 +26,7 @@ type AppConfig struct {
 	// 编码插件
 	CodecType string
 
-	// Connector ID
+	// Proxy ID
 	Connector string
 
 	CreateTime int64
@@ -54,4 +63,44 @@ type DataPoint struct {
 	DataPoints string
 	CreateTime int64
 	UpdateTime int64
+}
+
+type DownLinkData struct {
+	Id string `orm:"pk"`
+	DeviceId string
+	AppId string
+	Payload string
+	Status int
+	CreateTime int64
+	UpdateTime int64
+}
+
+type DelayedDownLinkData struct {
+	Id string `orm:"pk"`
+	DeviceId string
+	AppId string
+	Payload string
+	Type int // 1:Push平台主动发送,0:Pull设备主动拉取
+	Status int
+	CreateTime int64
+	UpdateTime int64
+}
+
+type DownLinkLog struct {
+	Id string `orm:"pk"`
+	DeviceId string
+	AppId string
+	Payload string
+	Status int
+	CreateTime int64
+	UpdateTime int64
+}
+
+type TriggerConfig struct {
+	Id string `orm:"pk"`
+	AppId string
+	Content string
+	CreateTime int64
+	UpdateTime int64
+	Status int
 }

@@ -17,7 +17,7 @@ var ConnectorRepository connector.Repository
 func Connector() error {
 	ConnectorRepository = connector.New()
 
-	go loadConnectors()
+	loadConnectors()
 	return nil
 }
 
