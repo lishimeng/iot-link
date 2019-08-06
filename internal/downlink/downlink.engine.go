@@ -14,7 +14,6 @@ type MessageDownLinkEngine interface {
 }
 
 var _singleton MessageDownLinkEngine
-var LogEnable = false
 
 type msgEngine struct {
 	// 每次读取数据量

@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	log "github.com/jeanphorn/log4go"
 	"github.com/lishimeng/iot-link/internal/db/repo"
+	"github.com/lishimeng/iot-link/internal/etc"
 	"github.com/lishimeng/iot-link/internal/event"
 	"github.com/lishimeng/iot-link/internal/model"
 	"time"
@@ -39,7 +40,7 @@ func (m msgEngine) getMsgCount() int64 {
 		size = 0
 	}
 
-	if LogEnable {
+	if etc.Config.DownLink.LogEnable {
 		log.Debug("message size:%d", size)
 	}
 	return size
@@ -71,12 +72,12 @@ func (m msgEngine) sendAll() (size int) {
 
 // 发送列表(自动发送列表)
 func (m msgEngine) fetchData() (datas []repo.DownLinkData, err error) {
-	if LogEnable {
+	if etc.Config.DownLink.LogEnable {
 		log.Debug("fetch data...")
 	}
 	datas, err = repo.ListMessage(m.fetchSize)
 
-	if LogEnable {
+	if etc.Config.DownLink.LogEnable {
 		log.Debug("data size: %d", len(datas))
 	}
 	return datas, err

@@ -4,7 +4,7 @@ name = "Iot Link Server"
 version = "1.0.0"
 
 [influx]
-host = "http://192.168.1.12:8086"
+host = "http://192.168.10.101:8086"
 database = "sensordata"
 
 [db]
@@ -21,3 +21,4 @@ listen = ":80"
 fetch-size = 10
 # idle if no downLink data (Millisecond)
 idle-time = 5000
+#log-enable = false

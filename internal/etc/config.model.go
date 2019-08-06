@@ -30,4 +30,5 @@ type influx struct {
 type downLink struct {
 	IdleTime int64 `toml:"idle-time"`
 	FetchSize int `toml:"fetch-size"`
+	LogEnable bool `toml:"log-enable"`
 }
