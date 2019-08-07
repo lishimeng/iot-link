@@ -1,8 +1,10 @@
 package api
 
 import (
+	"encoding/json"
 	"github.com/kataras/iris"
 	"github.com/lishimeng/iot-link/internal/db/repo"
+	"github.com/lishimeng/iot-link/internal/model"
 )
 
 func SetupTrigger(app *iris.Application) {
@@ -21,6 +23,15 @@ func routTrigger(app *iris.Application) {
 	}
 }
 
+type Trigger struct {
+	Id         string         `json:"id"`
+	AppId      string         `json:"appId"`
+	Content    *model.Trigger `json:"content,omitempty"`
+	CreateTime int64          `json:"createTime,omitempty"`
+	UpdateTime int64          `json:"updateTime,omitempty"`
+	Status     int            `json:"status,omitempty"`
+}
+
 func listTriggers(ctx iris.Context) {
 	res := NewBean()
 	appId := ctx.Params().Get("appId")
@@ -28,7 +39,20 @@ func listTriggers(ctx iris.Context) {
 	if err != nil {
 		res.Code = -1
 	} else {
-		res.Item = &triggers
+		if len(triggers) > 0 {
+			list := make([]Trigger, len(triggers))
+			for index, item := range triggers {
+				t := Trigger{
+					Id:         item.Id,
+					AppId:      item.AppId,
+					CreateTime: item.CreateTime,
+					UpdateTime: item.UpdateTime,
+					Status:     item.Status,
+				}
+				list[index] = t
+			}
+			res.Item = &list
+		}
 	}
 
 	_, _ = ctx.JSON(&res)
@@ -43,7 +67,17 @@ func getTrigger(ctx iris.Context) {
 		res.Code = -1
 	} else {
 		if triggerConfig.AppId == appId {
-			res.Item = &triggerConfig
+			t := Trigger{
+				Id:     triggerConfig.Id,
+				AppId:  triggerConfig.AppId,
+				Status: triggerConfig.Status,
+			}
+			content := model.Trigger{}
+			err = json.Unmarshal([]byte(triggerConfig.Content), &content)
+			if err == nil {
+				t.Content = &content
+			}
+			res.Item = &t
 		} else {
 			res.Code = -1
 		}

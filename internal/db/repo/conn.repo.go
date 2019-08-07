@@ -7,10 +7,10 @@ import (
 	"time"
 )
 
-func GetConnectorConfig(id string) (c *ConnectorConfig, err error) {
+func GetConnectorConfig(id string) (c ConnectorConfig, err error) {
 
-	c = &ConnectorConfig{Id: id}
-	err = db.Orm.Context.Read(c)
+	c = ConnectorConfig{Id: id}
+	err = db.Orm.Context.Read(&c)
 	return c, err
 }
 

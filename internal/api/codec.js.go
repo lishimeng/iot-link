@@ -21,9 +21,17 @@ func routeCodecJs(app *iris.Application) {
 	}
 }
 
+type Codec struct {
+	AppId         string `json:"appId"`
+	EncodeContent string `json:"encode,omitempty"`
+	DecodeContent string `json:"decode,omitempty"`
+	CreateTime    int64  `json:"createTime,omitempty"`
+	UpdateTime    int64  `json:"updateTime,omitempty"`
+}
+
 func codecTemplate(ctx iris.Context) {
 	res := NewBean()
-	item := repo.CodecScript{
+	item := Codec{
 		EncodeContent: raw.EncodeTpl,
 		DecodeContent: raw.DecodeTpl,
 	}
@@ -39,7 +47,12 @@ func getCodecJs(ctx iris.Context) {
 	if err != nil {
 		res.Code = -1
 	} else {
-		res.Item = &js
+		c := Codec{
+			AppId:         js.AppId,
+			EncodeContent: js.EncodeContent,
+			DecodeContent: js.DecodeContent,
+		}
+		res.Item = &c
 	}
 
 	_, _ = ctx.JSON(&res)

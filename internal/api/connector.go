@@ -1,6 +1,8 @@
 package api
 
 import (
+	"encoding/json"
+	log "github.com/jeanphorn/log4go"
 	"github.com/kataras/iris"
 	"github.com/lishimeng/iot-link/internal/db/repo"
 )
@@ -15,11 +17,20 @@ func routeConnector(app *iris.Application) {
 
 	{
 		p.Get("/", getConnectors)
-		p.Get("{connectorId}/", getConnector)
+		p.Get("/{connectorId}", getConnector)
 		p.Post("/", createConnector)
-		p.Post("{connectorId}/", updateConnector)
-		p.Post("{connectorId}/del", delConnector)
+		p.Post("/{connectorId}/", updateConnector)
+		p.Post("/{connectorId}/del", delConnector)
 	}
+}
+
+type Connector struct {
+	Id         string      `json:"id"`
+	Name       string      `json:"name"`
+	Type       string      `json:"type"`
+	Props      interface{} `json:"props,omitempty"`
+	CreateTime int64       `json:"createTime,omitempty"`
+	UpdateTime int64       `json:"updateTime,omitempty"`
 }
 
 func getConnectors(ctx iris.Context) () {
@@ -33,7 +44,20 @@ func getConnectors(ctx iris.Context) () {
 	if err != nil || len(connectors) == 0 {
 		res.Code = -1
 	} else {
-		res.Item = &connectors
+		if len(connectors) > 0 {
+			list := make([]Connector, len(connectors))
+			for index, item := range connectors {
+				c := Connector{
+					Id:         item.Id,
+					Name:       item.Name,
+					Type:       item.Type,
+					CreateTime: item.CreateTime,
+					UpdateTime: item.UpdateTime,
+				}
+				list[index] = c
+			}
+			res.Item = &list
+		}
 		res.Page = &page
 	}
 
@@ -43,11 +67,22 @@ func getConnectors(ctx iris.Context) () {
 func getConnector(ctx iris.Context) () {
 
 	connectorId := ctx.Params().Get("connectorId")
+	log.Debug("get connector %s", connectorId)
 	connectorConfig, err := repo.GetConnectorConfig(connectorId)
 
 	var res = NewBean()
 	if err == nil {
-		res.Item = &connectorConfig
+		p := make(map[string]interface{})
+		err = json.Unmarshal([]byte(connectorConfig.Props), &p)
+		c := Connector{
+			Id:   connectorConfig.Id,
+			Name: connectorConfig.Name,
+			Type: connectorConfig.Type,
+		}
+		if err == nil {
+			c.Props = p
+		}
+		res.Item = &c
 	} else {
 		res.Code = -1
 	}

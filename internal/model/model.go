@@ -55,7 +55,7 @@ type DataPoint struct {
 
 type Trigger struct {
 	Tags []TriggerTag `json:"tags,omitempty"`
-	TargetEvent *EventPayload `json:"targetEvent"`
+	TargetEvent *EventPayload `json:"targetEvent,omitempty"`
 }
 
 type TriggerTag struct {

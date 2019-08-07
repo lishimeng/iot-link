@@ -21,6 +21,17 @@ func routeApplication(app *iris.Application) {
 	}
 }
 
+type Application struct {
+	AppId          string `json:"id"`
+	AppDescription string `json:"description,omitempty"`
+	// 编码插件
+	CodecType string `json:"codec,omitempty"`
+	// Proxy ID
+	Connector  string `json:"connector,omitempty"`
+	CreateTime int64  `json:"createTime,omitempty"`
+	UpdateTime int64  `json:"updateTime,omitempty"`
+}
+
 // app配置
 func getApp(ctx iris.Context) {
 
@@ -29,7 +40,15 @@ func getApp(ctx iris.Context) {
 
 	var res = NewBean()
 	if err == nil {
-		res.Item = &app
+		a := Application{
+			AppId:          app.AppId,
+			AppDescription: app.AppDescription,
+			CodecType:      app.CodecType,
+			Connector:      app.Connector,
+			CreateTime:     app.CreateTime,
+			UpdateTime:     app.UpdateTime,
+		}
+		res.Item = &a
 	} else {
 		res.Code = -1
 	}
@@ -48,7 +67,21 @@ func getApps(ctx iris.Context) {
 	if err != nil || len(apps) == 0 {
 		res.Code = -1
 	} else {
-		res.Item = &apps
+		if len(apps) > 0 {
+			list := make([]Application, len(apps))
+			for index, app := range apps {
+				a := Application{
+					AppId:          app.AppId,
+					AppDescription: app.AppDescription,
+					CodecType:      app.CodecType,
+					Connector:      app.Connector,
+					CreateTime:     app.CreateTime,
+					UpdateTime:     app.UpdateTime,
+				}
+				list[index] = a
+			}
+			res.Item = &list
+		}
 		res.Page = &page
 	}
 

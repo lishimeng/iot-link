@@ -21,10 +21,17 @@ func routLogic(app *iris.Application) {
 	}
 }
 
+type Logic struct {
+	AppId      string `json:"appId"`
+	Content    string `json:"content,omitempty"`
+	CreateTime int64 `json:"createTime,omitempty"`
+	UpdateTime int64 `json:"updateTime,omitempty"`
+}
+
 func logicTemplate(ctx iris.Context) {
 	res := NewBean()
 
-	item := repo.LogicScript{
+	item := Logic{
 		Content: logic.Tpl,
 	}
 	res.Item = &item
@@ -39,7 +46,11 @@ func getLogic(ctx iris.Context) {
 	if err != nil {
 		res.Code = -1
 	} else {
-		res.Item = &logicScript
+		c := Logic{
+			AppId: logicScript.AppId,
+			Content: logicScript.Content,
+		}
+		res.Item = &c
 	}
 
 	_, _ = ctx.JSON(&res)
