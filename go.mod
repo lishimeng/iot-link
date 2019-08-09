@@ -3,7 +3,6 @@ module github.com/lishimeng/iot-link
 go 1.12
 
 require (
-	github.com/BurntSushi/toml v0.3.1
 	github.com/Joker/jade v1.0.0 // indirect
 	github.com/Shopify/goreferrer v0.0.0-20181106222321-ec9c9a553398 // indirect
 	github.com/ajg/form v1.5.1 // indirect
@@ -32,7 +31,7 @@ require (
 	github.com/klauspost/cpuid v1.2.1 // indirect
 	github.com/lib/pq v1.2.0
 	github.com/lishimeng/go-connector v0.0.1
-	github.com/lishimeng/go-libs v0.0.1
+	github.com/lishimeng/go-libs v0.0.2
 	github.com/mattn/go-colorable v0.1.2 // indirect
 	github.com/microcosm-cc/bluemonday v1.0.2 // indirect
 	github.com/moul/http2curl v1.0.0 // indirect
