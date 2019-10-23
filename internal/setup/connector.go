@@ -66,7 +66,7 @@ func loadConnector(connConf repo.ConnectorConfig) {
 			return
 		}
 		messageEngine := message.GetEngine()
-		c.SetListener(messageEngine.OnDataUplink)
+		c.SetListener(messageEngine.OnDataUpLink)
 		ConnectorRepository.Register(c)
 	}
 }

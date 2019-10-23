@@ -9,7 +9,7 @@
 <script>
 import AppItem from './components/AppItem'
 export default {
-  name: 'Connectors',
+  name: 'Applications',
   components: { AppItem },
   data: () => {
     return {

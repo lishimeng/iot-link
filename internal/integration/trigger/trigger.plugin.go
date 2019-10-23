@@ -55,6 +55,11 @@ func onData(triggerConfig repo.TriggerConfig, msg model.LinkMessage) (payload *m
 	t := model.Trigger{}
 	err = json.Unmarshal([]byte(triggerConfig.Content), &t)
 	if err != nil {
+		log.Debug(triggerConfig.Content)
+		return payload, err
+	}
+
+	if !checkDevice(t, msg) {
 		return payload, err
 	}
 	var ok bool
@@ -65,10 +70,25 @@ func onData(triggerConfig repo.TriggerConfig, msg model.LinkMessage) (payload *m
 		if ok {
 			// 条件触发器在本数据中命中,payload为响应数据
 			log.Debug("trigger hit the target")
+			log.Debug("%s", triggerConfig.Content)
 			payload = handleEvent(t, msg)
 		}
 	}
 	return payload, err
+}
+
+func checkDevice(t model.Trigger, msg model.LinkMessage) bool {
+	if len(t.DeviceID) > 0 {
+		if t.DeviceID != msg.DeviceID {
+			return false
+		}
+	}
+	if len(t.DeviceName) > 0 {
+		if t.DeviceName != msg.DeviceName {
+			return false
+		}
+	}
+	return true
 }
 
 func handleEvent(t model.Trigger, _ model.LinkMessage) (payload *model.EventPayload) {
@@ -80,6 +100,7 @@ func handleEvent(t model.Trigger, _ model.LinkMessage) (payload *model.EventPayl
 }
 
 func handleTrigger(t model.Trigger, msg model.LinkMessage) (b bool, err error) {
+
 
 	javascript := buildTriggerContent(t, msg)
 	b, err = calcTrigger(javascript)

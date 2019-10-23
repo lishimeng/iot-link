@@ -11,7 +11,7 @@ import (
 type connectorLoraWan struct {
 	Id               string
 	Name             string
-	Proxy            lorawan.Connector
+	Proxy            *lorawan.Connector
 	Listener         connector.UpLinkListener
 	State            bool
 	StateDescription string
@@ -96,8 +96,11 @@ func (c *connectorLoraWan) onMessage(payload lorawan.PayloadRx) {
 func (c connectorLoraWan) DownLink(target model.Target, logicData []byte) {
 	// 业务数据部分必须为base64格式
 	raw := base64.StdEncoding.EncodeToString(logicData)
+	log.Debug("lora down link [%s]%s:%s", target.ConnectorId, target.AppId, target.DeviceId)
+	log.Debug("data object:%s", logicData)
+	log.Debug("data raw:%s", raw)
 
-	downLinkData := lorawan.PayloadTx{FPort: 2, Data: raw}
+	downLinkData := lorawan.PayloadTx{FPort: 3, Data: raw}
 
 	go func() {
 		err := c.Proxy.DownLink(target.AppId, target.DeviceId, downLinkData)

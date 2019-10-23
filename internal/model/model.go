@@ -54,6 +54,8 @@ type DataPoint struct {
 }
 
 type Trigger struct {
+	DeviceID string `json:"deviceID,omitempty"`
+	DeviceName string `json:"deviceName,omitempty"`
 	Tags []TriggerTag `json:"tags,omitempty"`
 	TargetEvent *EventPayload `json:"targetEvent,omitempty"`
 }

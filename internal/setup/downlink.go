@@ -15,5 +15,9 @@ func DownLink() error {
 }
 
 func run() {
-	go downlink.GetInstance().StartDownLink()
+	go func() {
+		handler := downlink.GetInstance()
+		h := *handler
+		h.StartDownLink()
+	}()
 }

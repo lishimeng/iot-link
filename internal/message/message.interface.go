@@ -5,7 +5,7 @@ import (
 )
 
 type DataProcessEngine interface {
-	OnDataUplink(uplink *model.LinkMessage)
+	OnDataUpLink(upLink *model.LinkMessage)
 	OnDataDownLink(target model.Target, props map[string]interface{})
 	SetCallback(cb OnDownLink)
 }
@@ -31,8 +31,8 @@ func (d *dataProcessEngineImpl) SetCallback(cb OnDownLink) {
 	d.cb = cb
 }
 
-func (d dataProcessEngineImpl) OnDataUplink(uplink *model.LinkMessage) {
-	processUpLink(uplink)
+func (d dataProcessEngineImpl) OnDataUpLink(upLink *model.LinkMessage) {
+	processUpLink(upLink)
 }
 
 func (d dataProcessEngineImpl) OnDataDownLink(target model.Target, props map[string]interface{}) {

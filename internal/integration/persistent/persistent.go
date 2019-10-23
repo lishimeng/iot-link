@@ -9,7 +9,10 @@ import (
 var influxClient *influx.Connector
 
 func Init() (err error) {
-	influxClient, err = influx.New(etc.Config.Influx.Host)
+
+	if etc.Config.Influx.Enable == 1 {
+		influxClient, err = influx.New(etc.Config.Influx.Host)
+	}
 	return err
 }
 

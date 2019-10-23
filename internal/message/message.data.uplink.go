@@ -29,10 +29,15 @@ func processUpLink(message *model.LinkMessage) {
 	processTriggers(*message)
 
 	// active delayed message
-	downlink.GetInstance().ActiveDelayedMessage(message.ApplicationID, message.DeviceID)
+	var handler = downlink.GetInstance()
+	var h = *handler
+	h.ActiveDelayedMessage(message.ApplicationID, message.DeviceID)
 }
 
 func processDecode(message *model.LinkMessage) (err error) {
+	if message.Data != nil {// 不需要decode
+		return err
+	}
 	var appConfig repo.AppConfig
 	appConfig, err = repo.GetApp(message.ApplicationID)
 	if err != nil {
@@ -42,9 +47,7 @@ func processDecode(message *model.LinkMessage) (err error) {
 	}
 
 	if appConfig.CodecType != codec.None {
-		if message.Data == nil { // 需要decode
-			message.Data, err = decode(message.ApplicationID, appConfig.CodecType, message.Raw)
-		}
+		message.Data, err = decode(message.ApplicationID, appConfig.CodecType, message.Raw)
 	}
 	return err
 }
@@ -71,7 +74,8 @@ func processTriggers(message model.LinkMessage) {
 		log.Debug(err)
 	} else {
 		if len(eventMessages) > 0 {
-			h := downlink.GetInstance()// TODO downLink类型/topic转发类型
+			handler := downlink.GetInstance()// TODO downLink类型/topic转发类型
+			h := *handler
 			for _, eventPayload := range eventMessages {
 				e := h.SaveMessage(eventPayload)
 				if e != nil {

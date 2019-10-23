@@ -110,7 +110,9 @@ func _cb(target model.Target, data map[string]interface{}, delayed bool, auto bo
 		Delayed: delayed,
 		AutoDownLink: auto,
 	}
-	_ = downlink.GetInstance().SaveMessage(payload)
+	h := downlink.GetInstance()
+	var handler = *h
+	_ = handler.SaveMessage(payload)
 }
 
 func exportValue(value otto.Value) (target map[string]interface{}, ok bool) {

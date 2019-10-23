@@ -13,7 +13,7 @@ type MessageDownLinkEngine interface {
 	CloseExpiredDelayedMessages() // 关闭过期的消息
 }
 
-var _singleton MessageDownLinkEngine
+var _singleton *MessageDownLinkEngine
 
 type msgEngine struct {
 	// 每次读取数据量
@@ -22,7 +22,7 @@ type msgEngine struct {
 	downLinkStatus bool // true: running, false: stopped
 }
 
-func GetInstance() MessageDownLinkEngine {
+func GetInstance() *MessageDownLinkEngine {
 	return _singleton
 }
 
@@ -33,5 +33,6 @@ func Init(fetchSize int, idleTime time.Duration) {
 		idleTime:       idleTime,
 		downLinkStatus: false,
 	}
-	_singleton = &m
+	var handler MessageDownLinkEngine = &m
+	_singleton = &handler
 }

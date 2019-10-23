@@ -6,13 +6,14 @@ version = "1.0.0"
 [influx]
 host = "http://192.168.10.101:8086"
 database = "sensordata"
+enable = 0
 
 [db]
-host = "192.168.1.252"
+host = "localhost"
 database = "iot"
 port = 5432
-user = "postgres"
-password = "postgres"
+user = "iot"
+password = "iot"
 
 [web]
 listen = ":80"

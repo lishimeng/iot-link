@@ -17,7 +17,6 @@ func routTrigger(app *iris.Application) {
 	{
 		p.Get("", listTriggers)
 		p.Get("/{id}", getTrigger)
-		//p.Get("/tpl", triggerTemplate)
 		p.Post("/", createTrigger)
 		p.Post("/del/{id}", delTrigger)
 	}
@@ -49,6 +48,7 @@ func listTriggers(ctx iris.Context) {
 					UpdateTime: item.UpdateTime,
 					Status:     item.Status,
 				}
+				evalTriggerContent(item.Content, &t)
 				list[index] = t
 			}
 			res.Item = &list
@@ -72,11 +72,7 @@ func getTrigger(ctx iris.Context) {
 				AppId:  triggerConfig.AppId,
 				Status: triggerConfig.Status,
 			}
-			content := model.Trigger{}
-			err = json.Unmarshal([]byte(triggerConfig.Content), &content)
-			if err == nil {
-				t.Content = &content
-			}
+			evalTriggerContent(triggerConfig.Content, &t)
 			res.Item = &t
 		} else {
 			res.Code = -1
@@ -84,6 +80,14 @@ func getTrigger(ctx iris.Context) {
 	}
 
 	_, _ = ctx.JSON(&res)
+}
+
+func evalTriggerContent(c string, t *Trigger) {
+	content := model.Trigger{}
+	err := json.Unmarshal([]byte(c), &content)
+	if err == nil {
+		t.Content = &content
+	}
 }
 
 type TriggerForm struct {
